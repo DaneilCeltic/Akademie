@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akademie nevšedního vzdělávání - Moderní vzdělávací semináře</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <h1>Akademie<br><span class="accent">nevšedního vzdělávání</span></h1>
+                </div>
+                
+                <nav class="nav-desktop">
+                    <a href="#seminare" class="nav-link active">Semináře</a>
+                    <a href="#o-nas" class="nav-link">O nás</a>
+                    <a href="#kontakt" class="nav-link">Kontakt</a>
+                </nav>
+
+                <div class="nav-actions">
+                    <a href="#booking" class="btn btn-primary">Rezervovat seminář</a>
+                    <button class="menu-toggle" id="menuToggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile/Side Menu -->
+        <div class="side-menu" id="sideMenu">
+            <div class="side-menu-header">
+                <h3>Menu</h3>
+                <button class="close-menu" id="closeMenu">×</button>
+            </div>
+            <nav class="side-menu-nav">
+                <a href="#seminare" class="side-menu-link">Semináře</a>
+                <a href="#o-nas" class="side-menu-link">O nás</a>
+                <a href="#proc-my" class="side-menu-link">Proč s námi</a>
+                <a href="#nase-knihy" class="side-menu-link">Naše knihy</a>
+                <a href="#nase-leky" class="side-menu-link">Naše "léky"</a>
+                <a href="#kulturni-akce" class="side-menu-link">Kulturní akce</a>
+                <a href="#e-shop" class="side-menu-link">E-shop</a>
+                <a href="#videogalerie" class="side-menu-link">Videogalerie</a>
+                <a href="#kontakt" class="side-menu-link">Kontakt</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHRyYWluaW5nfGVufDB8fHx8MTc1MjgzNTE2MXww&ixlib=rb-4.1.0&q=85" alt="Profesionální semináře">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Semináře, které <span class="accent">skutečně změní</span> váš přístup k práci
+                </h1>
+                <p class="hero-subtitle">
+                    Již téměř 20 let nabízíme nevšední vzdělávací témata s lektory, kteří umí předat znalosti zábavnou a praktickou formou. 97% spokojenost od více než 10 000 účastníků.
+                </p>
+                <div class="hero-actions">
+                    <a href="#catalog" class="btn btn-primary btn-large">Prohlédnout semináře</a>
+                    <a href="#o-nas" class="btn btn-secondary btn-large">Více o nás</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">10 000+</span>
+                        <span class="stat-label">Účastníků</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">97%</span>
+                        <span class="stat-label">Spokojenost</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">87%</span>
+                        <span class="stat-label">Městských úřadů</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seminar Catalog Section -->
+    <section class="catalog" id="catalog">
+        <div class="container">
+            <div class="section-header">
+                <h2>Naše semináře</h2>
+                <p>Vyberte si z našich nevšedních vzdělávacích témat</p>
+            </div>
+
+            <div class="catalog-filters">
+                <button class="filter-btn active" data-category="all">Všechny</button>
+                <button class="filter-btn" data-category="komunikace">Komunikace</button>
+                <button class="filter-btn" data-category="management">Management</button>
+                <button class="filter-btn" data-category="pravo">Právo</button>
+                <button class="filter-btn" data-category="psychologie">Psychologie</button>
+            </div>
+
+            <div class="seminars-grid">
+                <div class="seminar-card" data-category="komunikace">
+                    <div class="seminar-image">
+                        <img src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwyfHxidXNpbmVzcyUyMHRyYWluaW5nfGVufDB8fHx8MTc1MjgzNTE2MXww&ixlib=rb-4.1.0&q=85" alt="Etiketa v písemné komunikaci">
+                    </div>
+                    <div class="seminar-content">
+                        <h3>Etiketa v písemné komunikaci</h3>
+                        <p>Jak psát profesionální e-maily a dopisy, které nezní jako úřední šablony.</p>
+                        <div class="seminar-meta">
+                            <span class="duration"><i class="fas fa-clock"></i> 4 hodiny</span>
+                            <span class="format"><i class="fas fa-users"></i> Uzavřený seminář</span>
+                        </div>
+                        <div class="seminar-actions">
+                            <button class="btn btn-primary btn-small">Rezervovat</button>
+                            <button class="btn btn-outline btn-small">Více info</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="seminar-card" data-category="management">
+                    <div class="seminar-image">
+                        <img src="https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg" alt="Jak se v práci prací neunavit">
+                    </div>
+                    <div class="seminar-content">
+                        <h3>Jak se v práci prací neunavit</h3>
+                        <p>Praktické postupy pro efektivní time management a work-life balance.</p>
+                        <div class="seminar-meta">
+                            <span class="duration"><i class="fas fa-clock"></i> 6 hodin</span>
+                            <span class="format"><i class="fas fa-users"></i> Uzavřený seminář</span>
+                        </div>
+                        <div class="seminar-actions">
+                            <button class="btn btn-primary btn-small">Rezervovat</button>
+                            <button class="btn btn-outline btn-small">Více info</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="seminar-card" data-category="pravo">
+                    <div class="seminar-image">
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHRyYWluaW5nfGVufDB8fHx8MTc1MjgzNTE2MXww&ixlib=rb-4.1.0&q=85" alt="Anti-GDPR a šikanózní podání">
+                    </div>
+                    <div class="seminar-content">
+                        <h3>Anti-GDPR a šikanózní podání</h3>
+                        <p>Jak se vypořádat s nesmyslnými požadavky a obtěžujícím jednáním.</p>
+                        <div class="seminar-meta">
+                            <span class="duration"><i class="fas fa-clock"></i> 3 hodiny</span>
+                            <span class="format"><i class="fas fa-users"></i> Uzavřený seminář</span>
+                        </div>
+                        <div class="seminar-actions">
+                            <button class="btn btn-primary btn-small">Rezervovat</button>
+                            <button class="btn btn-outline btn-small">Více info</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="seminar-card" data-category="psychologie">
+                    <div class="seminar-image">
+                        <img src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwyfHxidXNpbmVzcyUyMHRyYWluaW5nfGVufDB8fHx8MTc1MjgzNTE2MXww&ixlib=rb-4.1.0&q=85" alt="Akademie zad">
+                    </div>
+                    <div class="seminar-content">
+                        <h3>Akademie zad</h3>
+                        <p>Jak si zdravě nastavit hranice a nepodlehnout syndromu vyhoření.</p>
+                        <div class="seminar-meta">
+                            <span class="duration"><i class="fas fa-clock"></i> 5 hodin</span>
+                            <span class="format"><i class="fas fa-users"></i> Uzavřený seminář</span>
+                        </div>
+                        <div class="seminar-actions">
+                            <button class="btn btn-primary btn-small">Rezervovat</button>
+                            <button class="btn btn-outline btn-small">Více info</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section class="booking" id="booking">
+        <div class="container">
+            <div class="section-header">
+                <h2>Rezervace semináře</h2>
+                <p>Vyplňte formulář a my vám připravíme seminář přímo ve vašem sídle</p>
+            </div>
+
+            <div class="booking-form-wrapper">
+                <form class="booking-form" id="bookingForm">
+                    <div class="form-group">
+                        <label for="company">Název organizace *</label>
+                        <input type="text" id="company" name="company" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contact-name">Kontaktní osoba *</label>
+                            <input type="text" id="contact-name" name="contact-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Telefon *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="participants">Počet účastníků *</label>
+                            <input type="number" id="participants" name="participants" min="1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seminar">Požadovaný seminář *</label>
+                        <select id="seminar" name="seminar" required>
+                            <option value="">Vyberte seminář...</option>
+                            <option value="etiketa">Etiketa v písemné komunikaci</option>
+                            <option value="time-management">Jak se v práci prací neunavit</option>
+                            <option value="anti-gdpr">Anti-GDPR a šikanózní podání</option>
+                            <option value="akademie-zad">Akademie zad</option>
+                            <option value="other">Jiný seminář</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preferred-date">Preferovaný termín</label>
+                        <input type="date" id="preferred-date" name="preferred-date">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Doplňující informace</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Sdělte nám více o vašich požadavcích..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-large">Odeslat poptávku</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="o-nas">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>O nás</h2>
+                    <p class="lead">Akademie nevšedního vzdělávání se věnuje vzdělávání, rozesmívání a inspirování již téměř 20 let.</p>
+                    <p>Jsme nevšední tematicky i metodicky. Nabízíme témata, která jinde nenajdete, a lektory, kteří jednak umí a jednak umí předat. Naše semináře realizujeme jako uzavřené v sídle objednatele, čímž se zvyšuje efektivita vzdělávacího procesu a snižuje průměrná cena.</p>
+                    <p>Mezi naše klienty patří gigant Unicorn, VZP ČR, Úřad vlády ČR a 87% městských úřadů v ČR. Jsme jediná vzdělávací společnost, která zveřejňuje hodnocení seminářů.</p>
+                    <div class="founder-quote">
+                        <p><em>"Kdyby byl jednoduchý, nejmenoval by se Život."</em></p>
+                        <span>- Radim Martynek, jednatel</span>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHRyYWluaW5nfGVufDB8fHx8MTc1MjgzNTE2MXww&ixlib=rb-4.1.0&q=85" alt="O nás">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Akademie nevšedního vzdělávání</h3>
+                    <p>Vzdělávání, rozesmívání a inspirování již téměř 20 let.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Kontakt</h4>
+                    <p>Radim Martynek<br>
+                    E-mail: info@akademie-vzdelavani.cz<br>
+                    Telefon: +420 123 456 789</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Rychlé odkazy</h4>
+                    <ul>
+                        <li><a href="#seminare">Semináře</a></li>
+                        <li><a href="#booking">Rezervace</a></li>
+                        <li><a href="#o-nas">O nás</a></li>
+                        <li><a href="#kontakt">Kontakt</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Akademie nevšedního vzdělávání, s. r. o. Všechna práva vyhrazena.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
