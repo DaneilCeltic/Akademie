@@ -47,10 +47,45 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Catalog filters
+// Catalog filters with dropdown functionality
 const filterButtons = document.querySelectorAll('.filter-btn');
+const dropdownBtns = document.querySelectorAll('.dropdown-btn');
 const seminarCards = document.querySelectorAll('.seminar-card');
 
+// Handle dropdown toggles
+dropdownBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const dropdown = btn.nextElementSibling;
+        const isActive = dropdown.classList.contains('show');
+        
+        // Close all dropdowns
+        document.querySelectorAll('.dropdown-content').forEach(d => {
+            d.classList.remove('show');
+        });
+        document.querySelectorAll('.dropdown-btn').forEach(d => {
+            d.classList.remove('active');
+        });
+        
+        // Toggle current dropdown
+        if (!isActive) {
+            dropdown.classList.add('show');
+            btn.classList.add('active');
+        }
+    });
+});
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+        dropdown.classList.remove('show');
+    });
+    document.querySelectorAll('.dropdown-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+});
+
+// Handle filter functionality
 filterButtons.forEach(button => {
     button.addEventListener('click', () => {
         // Remove active class from all buttons
@@ -62,18 +97,30 @@ filterButtons.forEach(button => {
         
         // Filter seminar cards
         seminarCards.forEach(card => {
-            if (category === 'all' || card.dataset.category === category) {
+            const cardCategories = card.dataset.category.split(' ');
+            
+            if (category === 'all' || 
+                cardCategories.includes(category) || 
+                (category === 'ai' && cardCategories.some(cat => cat.startsWith('ai-'))) ||
+                (category === 'komunikace' && cardCategories.some(cat => cat.startsWith('komunikace-'))) ||
+                (category === 'psychologie' && cardCategories.some(cat => cat.startsWith('psychologie-')))) {
                 card.style.display = 'block';
-                // Add fade-in animation
                 card.style.animation = 'fadeInUp 0.6s ease-out';
             } else {
                 card.style.display = 'none';
             }
         });
+        
+        // Close dropdown if it was clicked inside
+        const dropdown = button.closest('.dropdown-content');
+        if (dropdown) {
+            dropdown.classList.remove('show');
+            dropdown.previousElementSibling.classList.remove('active');
+        }
     });
 });
 
-// Booking form handling
+// Booking form handling with email functionality
 const bookingForm = document.getElementById('bookingForm');
 
 bookingForm.addEventListener('submit', (e) => {
@@ -87,11 +134,36 @@ bookingForm.addEventListener('submit', (e) => {
         data[key] = value;
     });
     
-    // Here you would typically send the data to your server
-    console.log('Booking form data:', data);
+    // Create email content
+    const emailSubject = encodeURIComponent(`Poptávka semináře: ${data.seminar || 'Neurčeno'}`);
+    const emailBody = encodeURIComponent(`
+Dobrý den,
+
+zasílám poptávku na seminář prostřednictvím webových stránek:
+
+ORGANIZACE: ${data.company || ''}
+KONTAKTNÍ OSOBA: ${data['contact-name'] || ''}
+E-MAIL: ${data.email || ''}
+TELEFON: ${data.phone || ''}
+POČET ÚČASTNÍKŮ: ${data.participants || ''}
+POŽADOVANÝ SEMINÁŘ: ${data.seminar || ''}
+PREFEROVANÝ TERMÍN: ${data['preferred-date'] || 'Neurčeno'}
+
+DOPLŇUJÍCÍ INFORMACE:
+${data.message || 'Bez dalších informací'}
+
+S pozdravem
+${data['contact-name'] || ''}
+    `.trim());
+    
+    // Create mailto link
+    const mailtoLink = `mailto:radim@martynek.cz?subject=${emailSubject}&body=${emailBody}`;
+    
+    // Open email client
+    window.location.href = mailtoLink;
     
     // Show success message
-    showNotification('Vaše poptávka byla úspěšně odeslána! Brzy se vám ozveme.', 'success');
+    showNotification('Váš e-mailový klient byl otevřen s předvyplněnou poptávkou. Odešlete e-mail pro dokončení objednávky.', 'success');
     
     // Reset form
     bookingForm.reset();
