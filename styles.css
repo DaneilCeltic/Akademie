@@ -450,6 +450,12 @@ p {
     color: white;
 }
 
+.filter-btn.active {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+}
+
 .seminars-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
