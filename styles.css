@@ -385,9 +385,68 @@ p {
 }
 
 .filter-btn:hover,
-.filter-btn.active {
+/* Dropdown Filters */
+.filter-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    position: relative;
+}
+
+.dropdown-btn i {
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+}
+
+.dropdown-btn.active i {
+    transform: rotate(180deg);
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    min-width: 200px;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.dropdown-content.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-content .filter-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    margin: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    font-size: 0.875rem;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content .filter-btn:hover {
+    background-color: #f3f4f6;
+    color: #3b82f6;
+}
+
+.dropdown-content .filter-btn.active {
     background-color: #3b82f6;
-    border-color: #3b82f6;
     color: white;
 }
 
