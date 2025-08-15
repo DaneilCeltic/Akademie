@@ -143,8 +143,8 @@ bookingForm.addEventListener('submit', async (e) => {
     console.log('Odesílám data:', data); // Debug log
     
     try {
-        // Send data to PHP endpoint (temporary debug version)
-        const response = await fetch('debug_mailer.php', {
+        // Send data to PHP endpoint (now secured)
+        const response = await fetch('send_email.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
