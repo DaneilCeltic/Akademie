@@ -1,158 +1,119 @@
-# Akademie nevšedního vzdělávání - Moderní HTML/CSS Šablony
+# Akademie nevšedního vzdělávání - Zabezpečené HTML/CSS šablony
 
-## Přehled
+## ⚠️ KRITICKÁ BEZPEČNOSTNÍ AKTUALIZACE
 
-Tato složka obsahuje kompletní sadu moderních HTML/CSS šablon pro webové stránky Akademie nevšedního vzdělávání. Šablony jsou navrženy s důrazem na semináře a rezervační systém, s možností snadné integrace do WordPress a Elementor.
+Tento systém byl aktualizován s pokročilými bezpečnostními funkcemi.
 
-## Struktura souborů
+## 🔒 Bezpečnostní funkce
 
-### Hlavní soubory
-- `index.html` - Hlavní stránka s katalogem seminářů
-- `seminar-detail.html` - Detailní stránka semináře
-- `styles.css` - Hlavní CSS styly
-- `seminar-detail.css` - Styly pro detailní stránku semináře
-- `script.js` - JavaScript funkcionalita
+### Implementovaná ochrana:
+- ✅ Blokování přístupu k citlivým souborům (.md, .log, .json, config)
+- ✅ Rate limiting (max 5 požadavků za 10 minut na IP)
+- ✅ Validace a sanitizace všech vstupů
+- ✅ CSRF ochrana
+- ✅ XSS ochrana
+- ✅ Content-Type validace
+- ✅ IP tracking a logování
+- ✅ Bezpečné error handling
 
-### Klíčové funkce
+### Chráněné soubory:
+- `email_config.php` - SMTP konfigurace
+- `*.log` - Log soubory
+- `*.md` - Dokumentace
+- `composer.json/lock` - Závislosti
+- `debug_*`, `test_*` - Debug soubory
 
-#### 1. Responzivní design
-- Plně responzivní design pro všechna zařízení
-- Mobilní menu s postranním panelem
-- Optimalizace pro tablet a desktop
+## 📁 Přístupné soubory (pouze tyto):
+- `index.html` - Hlavní stránka
+- `styles.css` - Styly
+- `script.js` - JavaScript
+- `seminar-detail.html` - Detailní stránka
+- `seminar-detail.css` - Styly pro detail
+- `send_email.php` - Mailer (pouze POST)
 
-#### 2. Katalog seminářů
-- Filtrování seminářů podle kategorií
-- Interaktivní karty seminářů
-- Rychlá akce "Rezervovat" a "Více info"
+## 🚀 Instalace (BEZPEČNÁ)
 
-#### 3. Rezervační systém
-- Kompletní formulář pro rezervaci
-- Předvyplnění z katalogu seminářů
-- Notifikační systém pro úspěšné odeslání
-
-#### 4. Moderní UX/UI
-- Smooth scrolling
-- Hover efekty a animace
-- Modální okna pro detaily seminářů
-- Scroll-to-top tlačítko
-
-## Integrace do WordPress/Elementor
-
-### Příprava pro WordPress
-1. **Styly**: Všechny CSS styly lze snadno importovat do WordPress theme
-2. **Struktura**: HTML je strukturováno pro snadnou konverzi na PHP šablony
-3. **Elementor kompatibilita**: Použity standardní CSS třídy kompatibilní s Elementor
-
-### Doporučené kroky integrace
-1. Importujte CSS do `style.css` vašeho WordPress theme
-2. Rozdělete HTML na části (header, footer, content)
-3. Vytvořte custom post type pro semináře
-4. Implementujte kontaktní formulář pomocí Contact Form 7 nebo podobného pluginu
-
-## Technické detaily
-
-### Použité technologie
-- **HTML5**: Sémantická struktura
-- **CSS3**: Flexbox, Grid, animace
-- **JavaScript**: Vanilla JS pro interaktivitu
-- **Font Awesome**: Ikony
-- **Google Fonts**: Typografie (Inter)
-
-### Barevná paleta
-- Primární: #3b82f6 (modrá)
-- Sekundární: #1f2937 (tmavě šedá)
-- Accent: #10b981 (zelená)
-- Pozadí: #f8fafc (světle šedá)
-
-### Breakpointy
-- Mobile: < 480px
-- Tablet: 481px - 768px
-- Desktop: > 768px
-
-## Obsah a přizpůsobení
-
-### Semináře
-Aktuálně zahrnuté semináře:
-- Etiketa v písemné komunikaci
-- Jak se v práci prací neunavit
-- Anti-GDPR a šikanózní podání
-- Akademie zad
-
-### Postranní menu
-Kompletní menu obsahuje:
-- Semináře (hlavní)
-- O nás
-- Proč s námi
-- Naše knihy
-- Naše "léky"
-- Kulturní akce
-- E-shop
-- Videogalerie
-- Kontakt
-
-## Přizpůsobení
-
-### Změna obrázků
-- Aktuálně používány stock obrázky z Unsplash
-- Nahraďte URL obrázků vlastními
-
-### Úprava obsahu
-- Všechny texty lze snadno editovat v HTML souborech
-- Údaje o seminářích, kontaktech a službách
-
-### Styling
-- Barvy lze změnit v CSS proměnných
-- Fonty lze nahradit v Google Fonts importu
-
-## Funkce pro WordPress
-
-### Kontaktní formulář
-```php
-// Integrace s Contact Form 7
-[contact-form-7 id="123" title="Rezervace semináře"]
+### 1. Stáhněte soubory
+```bash
+# Pouze produkční soubory!
 ```
 
-### Custom post type - Semináře
-```php
-// Registrace custom post type
-register_post_type('seminar', array(
-    'labels' => array(
-        'name' => 'Semináře',
-        'singular_name' => 'Seminář'
-    ),
-    'public' => true,
-    'has_archive' => true,
-    'supports' => array('title', 'editor', 'thumbnail')
-));
+### 2. Nainstalujte závislosti
+```bash
+composer install
 ```
 
-## Optimalizace
+### 3. Nakonfigurujte email_config.php
+```php
+define('SMTP_USERNAME', 'vas-email@gmail.com');
+define('SMTP_PASSWORD', 'app-password');
+define('RECIPIENT_EMAIL', 'radim@martynek.cz');
+```
 
-### Performance
-- Minifikované CSS a JS pro produkci
-- Optimalizované obrázky
-- Lazy loading pro obrázky
+### 4. Nastavte oprávnění
+```bash
+chmod 644 *.php *.html *.css *.js
+chmod 600 email_config.php
+chmod 755 .
+```
 
-### SEO
-- Sémantické HTML tagy
-- Meta tagy pro každou stránku
-- Správná struktura nadpisů (H1-H6)
+### 5. SMAŽTE debug soubory v produkci!
+```bash
+rm debug_*.php debug_*.html test_*.php troubleshooting.md
+```
 
-## Podpora a rozšíření
+## 🛡️ Bezpečnostní checklist
 
-### Možná rozšíření
-- Kalendář seminářů
-- Online platební systém
-- Uživatelské účty
-- Hodnocení seminářů
-- Newsletter systém
+Před nasazením do produkce:
+- [ ] SMTP údaje nakonfigurovány
+- [ ] Debug soubory smazány
+- [ ] Oprávnění nastavena
+- [ ] .htaccess aktivní
+- [ ] Rate limiting testován
+- [ ] HTTPS povoleno
 
-### Kompatibilita
-- Všechny moderní prohlížeče
-- WordPress 5.0+
-- Elementor 3.0+
-- Contact Form 7
-- WooCommerce ready
+## 📊 Monitorování
 
-## Licence
-Šablony jsou vytvořeny pro specifické použití Akademie nevšedního vzdělávání.
+### Log soubory:
+- `email_log.txt` - Úspěšné odeslání
+- `email_errors.txt` - Chyby při odesílání
+- `rate_limit_*.tmp` - Rate limiting data
+
+### Sledování:
+```bash
+tail -f email_log.txt email_errors.txt
+```
+
+## ⚡ Rychlé testování
+
+1. Otevřete pouze `index.html`
+2. Vyplňte formulář
+3. Zkontrolujte email v schránce
+4. Ověřte logy
+
+## 🔧 Troubleshooting
+
+### Časté problémy:
+1. **"Method Not Allowed"** - Používáte GET místo POST
+2. **"Rate limit exceeded"** - Příliš mnoho požadavků
+3. **"Invalid Content-Type"** - Chybí JSON header
+4. **"Výchozí konfigurace"** - Změňte SMTP údaje
+
+### Debug (pouze pro vývoj):
+```bash
+# Povolte debug soubory v .htaccess pro vaši IP
+Allow from YOUR_IP_ADDRESS
+```
+
+## 📞 Kontakt
+
+Pro technickou podporu kontaktujte vývojáře s:
+- Popisem chyby
+- IP adresou
+- Časem výskytu
+- Browser/server informacemi
+
+---
+
+**⚠️ BEZPEČNOSTNÍ UPOZORNĚNÍ:** 
+Nikdy necommitujte email_config.php s reálnými hesly do veřejného repo!
