@@ -120,11 +120,17 @@ filterButtons.forEach(button => {
     });
 });
 
-// Booking form handling with email functionality
+// Booking form handling with PHP mailer
 const bookingForm = document.getElementById('bookingForm');
 
-bookingForm.addEventListener('submit', (e) => {
+bookingForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    
+    // Disable submit button during processing
+    const submitBtn = bookingForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Odesílám...';
     
     // Get form data
     const formData = new FormData(bookingForm);
@@ -134,39 +140,41 @@ bookingForm.addEventListener('submit', (e) => {
         data[key] = value;
     });
     
-    // Create email content
-    const emailSubject = encodeURIComponent(`Poptávka semináře: ${data.seminar || 'Neurčeno'}`);
-    const emailBody = encodeURIComponent(`
-Dobrý den,
-
-zasílám poptávku na seminář prostřednictvím webových stránek:
-
-ORGANIZACE: ${data.company || ''}
-KONTAKTNÍ OSOBA: ${data['contact-name'] || ''}
-E-MAIL: ${data.email || ''}
-TELEFON: ${data.phone || ''}
-POČET ÚČASTNÍKŮ: ${data.participants || ''}
-POŽADOVANÝ SEMINÁŘ: ${data.seminar || ''}
-PREFEROVANÝ TERMÍN: ${data['preferred-date'] || 'Neurčeno'}
-
-DOPLŇUJÍCÍ INFORMACE:
-${data.message || 'Bez dalších informací'}
-
-S pozdravem
-${data['contact-name'] || ''}
-    `.trim());
-    
-    // Create mailto link
-    const mailtoLink = `mailto:radim@martynek.cz?subject=${emailSubject}&body=${emailBody}`;
-    
-    // Open email client
-    window.location.href = mailtoLink;
-    
-    // Show success message
-    showNotification('Váš e-mailový klient byl otevřen s předvyplněnou poptávkou. Odešlete e-mail pro dokončení objednávky.', 'success');
-    
-    // Reset form
-    bookingForm.reset();
+    try {
+        // Send data to PHP endpoint
+        const response = await fetch('send_email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Show success message
+            showNotification(result.message, 'success');
+            // Reset form
+            bookingForm.reset();
+        } else {
+            // Show error message
+            showNotification(result.message || 'Nastala chyba při odesílání formuláře.', 'error');
+            
+            // Log debug info if available
+            if (result.debug) {
+                console.error('Debug info:', result.debug);
+            }
+        }
+        
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification('Nastala chyba při odesílání formuláře. Zkuste to prosím později.', 'error');
+    } finally {
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    }
 });
 
 // Notification system
