@@ -195,12 +195,18 @@ function showNotification(message, type = 'info') {
         </div>
     `;
     
+    // Set colors based on type
+    let backgroundColor = '#3b82f6'; // default blue
+    if (type === 'success') backgroundColor = '#10b981'; // green
+    if (type === 'error') backgroundColor = '#ef4444'; // red
+    if (type === 'warning') backgroundColor = '#f59e0b'; // orange
+    
     // Add styles
     notification.style.cssText = `
         position: fixed;
         top: 20px;
         right: 20px;
-        background-color: ${type === 'success' ? '#10b981' : '#3b82f6'};
+        background-color: ${backgroundColor};
         color: white;
         padding: 1rem 1.5rem;
         border-radius: 8px;
@@ -213,7 +219,8 @@ function showNotification(message, type = 'info') {
     // Add to body
     document.body.appendChild(notification);
     
-    // Auto remove after 5 seconds
+    // Auto remove after 5 seconds (longer for errors)
+    const autoRemoveTime = type === 'error' ? 8000 : 5000;
     setTimeout(() => {
         if (notification.parentElement) {
             notification.style.animation = 'slideOutRight 0.3s ease-out';
@@ -221,7 +228,7 @@ function showNotification(message, type = 'info') {
                 notification.remove();
             }, 300);
         }
-    }, 5000);
+    }, autoRemoveTime);
 }
 
 // Add notification animations to CSS
