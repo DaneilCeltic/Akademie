@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test - PHP Mailer</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 800px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .debug-section { background: #f8f9fa; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        .error { color: #dc3545; }
+        .success { color: #28a745; }
+        .warning { color: #ffc107; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        input, select, textarea { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; }
+        pre { background: #f8f9fa; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Debug Test - PHP Mailer</h1>
+        
+        <div class="debug-section">
+            <h2>Krok 1: Kontrola prostředí</h2>
+            <button onclick="checkEnvironment()">Zkontrolovat prostředí</button>
+            <div id="envResult"></div>
+        </div>
+
+        <div class="debug-section">
+            <h2>Krok 2: Test formuláře</h2>
+            <form id="debugForm">
+                <label>Organizace:</label>
+                <input type="text" name="company" value="Test s.r.o." required>
+                
+                <label>Kontaktní osoba:</label>
+                <input type="text" name="contact-name" value="Jan Novák" required>
+                
+                <label>E-mail:</label>
+                <input type="email" name="email" value="test@example.com" required>
+                
+                <label>Telefon:</label>
+                <input type="tel" name="phone" value="+420123456789" required>
+                
+                <label>Počet účastníků:</label>
+                <input type="number" name="participants" value="10" required>
+                
+                <label>Seminář:</label>
+                <select name="seminar" required>
+                    <option value="ai-beginners">AI I. - pro začátečníky</option>
+                    <option value="ai-intermediate">AI II. - pro mírně pokročilé</option>
+                    <option value="legislativa-dokumenty">Současná legislativa</option>
+                </select>
+                
+                <label>Zpráva:</label>
+                <textarea name="message" rows="3">Toto je testovací zpráva pro debug účely.</textarea>
+                
+                <button type="button" onclick="testForm()">Test formuláře (Debug)</button>
+                <button type="button" onclick="testRealForm()">Test skutečného maileru</button>
+            </form>
+            <div id="formResult"></div>
+        </div>
+
+        <div class="debug-section">
+            <h2>Krok 3: Detailní logy</h2>
+            <button onclick="showLogs()">Zobrazit console logy</button>
+            <div id="consoleResult"></div>
+        </div>
+    </div>
+
+    <script>
+        let consoleMessages = [];
+        
+        // Zachytíme console logy
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            consoleMessages.push({ type: 'log', message: args.join(' '), time: new Date().toISOString() });
+            originalLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            consoleMessages.push({ type: 'error', message: args.join(' '), time: new Date().toISOString() });
+            originalError.apply(console, args);
+        };
+
+        async function checkEnvironment() {
+            const result = document.getElementById('envResult');
+            result.innerHTML = '<p>Kontroluji prostředí...</p>';
+            
+            try {
+                const response = await fetch('debug_mailer.php?action=check');
+                const data = await response.json();
+                
+                let html = '<h3>Výsledky kontroly:</h3><pre>' + JSON.stringify(data.debug, null, 2) + '</pre>';
+                
+                if (data.debug.files_exist['send_email.php']) {
+                    html += '<p class="success">✅ send_email.php existuje</p>';
+                } else {
+                    html += '<p class="error">❌ send_email.php neexistuje!</p>';
+                }
+                
+                if (data.debug.files_exist['vendor/autoload.php']) {
+                    html += '<p class="success">✅ PHPMailer je nainstalován</p>';
+                } else {
+                    html += '<p class="error">❌ PHPMailer není nainstalován! Spusťte: composer install</p>';
+                }
+                
+                if (data.debug.config && data.debug.config.is_default_config) {
+                    html += '<p class="warning">⚠️ Používáte výchozí konfiguraci - nastavte správné SMTP údaje!</p>';
+                }
+                
+                result.innerHTML = html;
+            } catch (error) {
+                result.innerHTML = '<p class="error">Chyba při kontrole prostředí: ' + error.message + '</p>';
+                console.error('Environment check error:', error);
+            }
+        }
+
+        async function testForm() {
+            const form = document.getElementById('debugForm');
+            const result = document.getElementById('formResult');
+            result.innerHTML = '<p>Testuji formulář...</p>';
+            
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => { data[key] = value; });
+            
+            console.log('Odesílám testovací data:', data);
+            
+            try {
+                const response = await fetch('debug_mailer.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Response status:', response.status);
+                const responseData = await response.json();
+                console.log('Response data:', responseData);
+                
+                let html = '<h3>Výsledek testu formuláře:</h3>';
+                if (responseData.success) {
+                    html += '<p class="success">✅ ' + responseData.message + '</p>';
+                } else {
+                    html += '<p class="error">❌ ' + responseData.message + '</p>';
+                }
+                
+                html += '<h4>Debug informace:</h4><pre>' + JSON.stringify(responseData.debug, null, 2) + '</pre>';
+                
+                result.innerHTML = html;
+            } catch (error) {
+                result.innerHTML = '<p class="error">Chyba při testu formuláře: ' + error.message + '</p>';
+                console.error('Form test error:', error);
+            }
+        }
+
+        async function testRealForm() {
+            const form = document.getElementById('debugForm');
+            const result = document.getElementById('formResult');
+            result.innerHTML = '<p>Testuji skutečný mailer...</p>';
+            
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => { data[key] = value; });
+            
+            console.log('Testuji skutečný mailer s daty:', data);
+            
+            try {
+                const response = await fetch('send_email.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Real mailer response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const responseData = await response.json();
+                console.log('Real mailer response data:', responseData);
+                
+                let html = '<h3>Výsledek skutečného maileru:</h3>';
+                if (responseData.success) {
+                    html += '<p class="success">✅ ' + responseData.message + '</p>';
+                    html += '<p><strong>Email byl odeslán!</strong></p>';
+                } else {
+                    html += '<p class="error">❌ ' + responseData.message + '</p>';
+                    if (responseData.debug) {
+                        html += '<h4>Debug informace:</h4><pre>' + JSON.stringify(responseData.debug, null, 2) + '</pre>';
+                    }
+                }
+                
+                result.innerHTML = html;
+            } catch (error) {
+                result.innerHTML = '<p class="error">Chyba při testu skutečného maileru: ' + error.message + '</p>';
+                console.error('Real mailer test error:', error);
+            }
+        }
+
+        function showLogs() {
+            const result = document.getElementById('consoleResult');
+            let html = '<h3>Console logy:</h3>';
+            
+            if (consoleMessages.length === 0) {
+                html += '<p>Žádné logy zatím nejsou k dispozici.</p>';
+            } else {
+                consoleMessages.forEach(msg => {
+                    const className = msg.type === 'error' ? 'error' : 'success';
+                    html += `<p class="${className}">[${msg.time}] ${msg.type.toUpperCase()}: ${msg.message}</p>`;
+                });
+            }
+            
+            result.innerHTML = html;
+        }
+
+        // Automatická kontrola při načtení stránky
+        window.addEventListener('load', () => {
+            checkEnvironment();
+        });
+    </script>
+</body>
+</html>
