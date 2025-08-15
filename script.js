@@ -140,6 +140,8 @@ bookingForm.addEventListener('submit', async (e) => {
         data[key] = value;
     });
     
+    console.log('Odesílám data:', data); // Debug log
+    
     try {
         // Send data to PHP endpoint
         const response = await fetch('send_email.php', {
@@ -150,7 +152,16 @@ bookingForm.addEventListener('submit', async (e) => {
             body: JSON.stringify(data)
         });
         
+        console.log('Response status:', response.status); // Debug log
+        console.log('Response headers:', response.headers); // Debug log
+        
+        // Check if response is ok
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const result = await response.json();
+        console.log('Response result:', result); // Debug log
         
         if (result.success) {
             // Show success message
@@ -168,8 +179,20 @@ bookingForm.addEventListener('submit', async (e) => {
         }
         
     } catch (error) {
-        console.error('Error:', error);
-        showNotification('Nastala chyba při odesílání formuláře. Zkuste to prosím později.', 'error');
+        console.error('Fetch error:', error);
+        
+        // More detailed error message
+        let errorMessage = 'Nastala chyba při odesílání formuláře: ';
+        
+        if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+            errorMessage += 'Nelze se připojit k serveru. Zkontrolujte, zda je PHP soubor send_email.php dostupný.';
+        } else if (error.message.includes('HTTP error')) {
+            errorMessage += `Server error (${error.message}). Zkontrolujte server logy.`;
+        } else {
+            errorMessage += error.message;
+        }
+        
+        showNotification(errorMessage, 'error');
     } finally {
         // Re-enable submit button
         submitBtn.disabled = false;
