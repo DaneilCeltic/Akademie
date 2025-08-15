@@ -1,0 +1,17 @@
+{
+    "name": "akademie/mailer",
+    "description": "PHP Mailer pro Akademii nevšedního vzdělávání",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "phpmailer/phpmailer": "^6.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Akademie\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
