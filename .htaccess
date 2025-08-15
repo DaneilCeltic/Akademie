@@ -1,33 +1,138 @@
+# === BEZPEČNOSTNÍ OCHRANA - AKADEMIE NEVŠEDNÍHO VZDĚLÁVÁNÍ ===
+
+# Blokování přístupu k citlivým souborům
+<FilesMatch "\.(md|txt|log|json|sh|conf|ini|env)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
 # Ochrana konfiguračních souborů
 <Files "email_config.php">
-    Order allow,deny
+    Order deny,allow
     Deny from all
 </Files>
 
 <Files "composer.json">
-    Order allow,deny
+    Order deny,allow
     Deny from all
 </Files>
 
+<Files "composer.lock">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Ochrana log souborů
 <Files "*.log">
-    Order allow,deny
+    Order deny,allow
     Deny from all
 </Files>
 
-# Debug soubory - pouze pro vývoj
-<Files "debug_*">
-    Order allow,deny
+# Ochrana dokumentačních souborů
+<Files "README.md">
+    Order deny,allow
     Deny from all
-    # Povolte pro vaši IP adresu:
+</Files>
+
+<Files "install_mailer.md">
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files "troubleshooting.md">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Ochrana debug souborů - POUZE PRO LOKÁLNÍ VÝVOJ
+<FilesMatch "^(debug_|test_).*\.php$">
+    Order deny,allow
+    Deny from all
+    # Povolte pouze pro vaši IP adresu:
+    # Allow from 127.0.0.1
+    # Allow from YOUR_IP_ADDRESS
+</FilesMatch>
+
+<Files "debug_test.html">
+    Order deny,allow  
+    Deny from all
     # Allow from 127.0.0.1
     # Allow from YOUR_IP_ADDRESS
 </Files>
 
-# Test soubory - pouze pro vývoj
-<Files "test_*">
-    Order allow,deny
+# Ochrana setup souborů
+<Files "setup.sh">
+    Order deny,allow
     Deny from all
-    # Povolte pro vaši IP adresu:
-    # Allow from 127.0.0.1
-    # Allow from YOUR_IP_ADDRESS
 </Files>
+
+# Blokování vendor adresáře
+<Directory "vendor">
+    Order deny,allow
+    Deny from all
+</Directory>
+
+# Blokování přístupu k Git souborům
+<FilesMatch "^\.git">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Blokování backup souborů
+<FilesMatch "\.(bak|backup|tmp|temp|old|orig|save)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Blokování zdrojových souborů
+<FilesMatch "\.(inc|class|lib)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# === HLAVNÍ APLIKAČNÍ SOUBORY (POVOLENÉ) ===
+# Pouze tyto soubory budou přístupné:
+# - index.html
+# - styles.css  
+# - script.js
+# - send_email.php (pouze POST požadavky)
+# - seminar-detail.html
+# - seminar-detail.css
+
+# Omezení send_email.php pouze na POST požadavky
+<Files "send_email.php">
+    <Limit GET HEAD>
+        Order deny,allow
+        Deny from all
+    </Limit>
+</Files>
+
+# === DODATEČNÁ BEZPEČNOST ===
+
+# Zakázat directory listing
+Options -Indexes
+
+# Zakázat server signature
+ServerSignature Off
+
+# Ochrana proti information disclosure
+<FilesMatch "\.(php|phtml)$">
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+</FilesMatch>
+
+# Limitování velikosti uploadů (pokud bude potřeba)
+LimitRequestBody 10485760
+
+# === POUZE PRO VÝVOJ - SMAŽTE V PRODUKCI ===
+# Pro povolení debug souborů na lokálním prostředí, odkomentujte:
+# <Files "debug_test.html">
+#     Allow from 127.0.0.1
+#     Allow from ::1
+# </Files>
+#
+# <FilesMatch "^(debug_|test_).*\.php$">
+#     Allow from 127.0.0.1
+#     Allow from ::1
+# </FilesMatch>
